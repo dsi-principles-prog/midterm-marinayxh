@@ -1,0 +1,30 @@
+---
+title: "40-modeling"
+output: html_notebook
+---
+
+5. Prepare the data for modeling
+
+Note: this will form the basis for your midterm project. Take advantage of TA's and my office hours. We can provide feedback and guidance. 
+
+```{r applying functions}
+feature_tweet <- new_gender_class%>%
+  #tweet_count_rel_duration_function(tweet_count)%>%
+  #fav_number_rel_gender_function()%>%
+  ovr_avg_function(retweet_count)%>%
+  tweet_count_rel_gender_conf_function()
+
+
+head(feature_tweet)
+```
+
+
+```{r select variables}
+model_tweet <- feature_tweet %>%
+  select(everything(),-user_timezone,-tweet_location,-tweet_id,-tweet_coord,-text,-sidebar_color,-profileimage,-profile_yn_gold,-name,-link_color,-gender_gold,-description,-profile_yn,-trusted_judgments,-unit_state,-golden,-unit_id,-tweet_created,-created,-last_judgment_at,-`profile_yn:confidence`)
+
+
+
+head(model_tweet)
+```
+

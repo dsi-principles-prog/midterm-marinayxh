@@ -1,0 +1,66 @@
+---
+title: "30-feature-learning"
+output: html_notebook
+---
+
+
+*Note: You may request that score for these sections replace your score for the coding portion of Assignment 3.*
+
+4. Using best practices, write four functions which add engineered features to the dataset, including a description and rationale. Include a test to determine whether the features are working as intended. 
+
+
+### tweet_count_rel_duration_function
+This functoin is used for linking the time duration, which is the time period that between the date of a user created the account and the date of a user's last action with this account, and any variable that we want, such as the tweet counts or the retweet counts. The function takes data frame and the variable that we are interested in, then grouped by time duration. Relative questions can be something like "how often has a user posts tweets during the entire time of using twitter?".
+
+inputs for function: df, var
+
+new variable named: tweet_count_rel_duration
+
+note: var needed to be scaled, and do not forget to ungroup
+
+
+### fav_number_rel_gender_function
+This function is used for linking the number of tweets that users have favorited with users gender. The function will take the data frame and have it group by gender, then mutate a new column for a new variable called 'fav_number_rel_gender' with scaled variable 'fav_number'. Relative question can be something like "does the female usually favorite more tweets than the male?".
+
+inputs for function: df
+
+new variable named: fav_number_rel_gender
+
+note: fav_number needed to be scaled, and do not forget to ungroup
+
+
+### ovr_avg_function
+```{r tweet counts and retweet counts for female}
+
+# This function is used for linking the number of retweet counts and the difference of female tweet counts based on the average of female counts. The function will take a data frame and the varible that we want to use and calculate for the difference between the true value and the mean. We are now focusing more on the female part. To be noticed here, 'var' is not limited to the tweet count, but here we assume we are looking at the relationship between tweet count and retweet count. Relative question can be something like "for females who post more tweets than the average, do they usually retweet more?". 
+ovr_avg_function<- function(df, var){
+  df %>%
+    filter(gender == "female")%>%
+    mutate(female_avg = {{var}}-mean({{var}}))%>%
+    group_by(female_avg)%>%
+    mutate(var_rel_ovravg_tweet = {{var}})%>%
+    ungroup()
+}
+
+new_gender_class%>%
+  ovr_avg_function(retweet_count)%>%
+  assert(within_bounds(0,Inf),var_rel_ovravg_tweet)
+```
+
+### tweet_count_rel_gender_conf_function
+```{r tweet count and the gender confidence}
+# This function is used for linking tweet count and the gender confidence. The function is taking a data frame and group by the gender confidence, then it has a new variable with scaled tweet counts. Relative question could be somethinng like "could we become more confident about one user's gender when we saw he or she is an active user and posts many tweets?".
+tweet_count_rel_gender_conf_function<- function(df){
+  df %>%
+    group_by('gender:confidence')%>%
+    mutate(tweet_count_rel_gender_conf = scale(tweet_count))%>%
+    ungroup()
+}
+
+new_gender_class%>%
+  tweet_count_rel_gender_conf_function()
+```
+
+
+
+
