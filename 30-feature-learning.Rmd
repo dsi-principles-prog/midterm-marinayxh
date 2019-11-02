@@ -18,6 +18,17 @@ new variable named: tweet_count_rel_duration
 
 note: var needed to be scaled, and do not forget to ungroup
 
+```{r Zekun Wang part}
+tweet_count_rel_duration_function <- function(df, var){
+  df %>%
+    group_by(duration) %>% 
+    mutate(tweet_count_rel_duration = scale({{var}})) %>% 
+    ungroup()
+}
+
+tweet_count_rel_duration_function(new_gender_class,tweet_count)
+```
+
 
 ### fav_number_rel_gender_function
 This function is used for linking the number of tweets that users have favorited with users gender. The function will take the data frame and have it group by gender, then mutate a new column for a new variable called 'fav_number_rel_gender' with scaled variable 'fav_number'. Relative question can be something like "does the female usually favorite more tweets than the male?".
